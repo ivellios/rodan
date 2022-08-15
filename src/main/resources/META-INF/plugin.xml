@@ -1,18 +1,21 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
     <id>com.github.ivellios.rodan</id>
-    <name>rodan</name>
-    <vendor>ivellios</vendor>
+    <name>Rodan</name>
+    <vendor>Janusz "Ivellios" Kamienski</vendor>
 
     <depends>com.intellij.modules.platform</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <applicationService serviceImplementation="com.github.ivellios.rodan.services.MyApplicationService"/>
-        <projectService serviceImplementation="com.github.ivellios.rodan.services.MyProjectService"/>
+        <applicationService serviceImplementation="com.github.ivellios.rodan.services.JiraTasksService"/>
+        <applicationConfigurable parentId="tasks" instance="com.github.ivellios.rodan.settings.RodanSettingsConfigurable"
+                                 id="org.intellij.sdk.settings.AppSettingsConfigurable"
+                                 displayName="Rodan"/>
+        <applicationService serviceImplementation="com.github.ivellios.rodan.settings.RodanSettingsState"/>
     </extensions>
 
     <applicationListeners>
-        <listener class="com.github.ivellios.rodan.listeners.MyProjectManagerListener"
+        <listener class="com.github.ivellios.rodan.listeners.JiraTasksListener"
                   topic="com.intellij.openapi.project.ProjectManagerListener"/>
     </applicationListeners>
 </idea-plugin>
