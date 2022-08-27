@@ -7,15 +7,18 @@
     <depends>com.intellij.modules.platform</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <applicationService serviceImplementation="com.github.ivellios.rodan.services.JiraTasksService"/>
-        <applicationConfigurable parentId="tasks" instance="com.github.ivellios.rodan.settings.RodanSettingsConfigurable"
-                                 id="org.intellij.sdk.settings.AppSettingsConfigurable"
-                                 displayName="Rodan"/>
-        <applicationService serviceImplementation="com.github.ivellios.rodan.settings.RodanSettingsState"/>
+        <projectService serviceImplementation="com.github.ivellios.rodan.services.JiraTasksService"/>
+        <projectConfigurable
+                parentId="tasks"
+                instance="com.github.ivellios.rodan.settings.RodanSettingsConfigurable"
+                id="com.github.ivellios.rodan.settings.RodanSettingsConfigurable"
+                displayName="Rodan"
+                nonDefaultProject="true"/>
+        <projectService serviceImplementation="com.github.ivellios.rodan.settings.RodanSettingsState"/>
     </extensions>
 
-    <applicationListeners>
+    <projectListeners>
         <listener class="com.github.ivellios.rodan.listeners.JiraTasksListener"
                   topic="com.intellij.openapi.project.ProjectManagerListener"/>
-    </applicationListeners>
+    </projectListeners>
 </idea-plugin>

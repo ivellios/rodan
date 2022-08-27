@@ -22,10 +22,8 @@ public class JiraTasksListener implements ProjectManagerListener {
             return;
         }
 
-        JiraTasksService projectCountingService =
-                ApplicationManager.getApplication().getService(JiraTasksService.class);
-
-        projectCountingService.startService();
+        JiraTasksService service = project.getService(JiraTasksService.class);
+        service.startService();
 
     }
 
@@ -39,6 +37,9 @@ public class JiraTasksListener implements ProjectManagerListener {
         if (ApplicationManager.getApplication().isUnitTestMode()) {
             return;
         }
+
+        JiraTasksService service = project.getService(JiraTasksService.class);
+        service.stopService();
     }
 
 }

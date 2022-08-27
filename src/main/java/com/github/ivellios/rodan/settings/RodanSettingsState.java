@@ -1,9 +1,8 @@
 package com.github.ivellios.rodan.settings;
 
-import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.openapi.components.State;
-import com.intellij.openapi.components.Storage;
+import com.intellij.openapi.project.Project;
 import com.intellij.util.xmlb.XmlSerializerUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -12,8 +11,8 @@ import org.jetbrains.annotations.Nullable;
  * Stores persistent data with the plugin settings.
  */
 @State(
-        name = "org.intellij.sdk.settings.RodanSettingsState",
-        storages = @Storage("RodanSettingsPlugin.xml")
+        name = "org.intellij.sdk.settings.RodanSettingsState" //,
+//         storages = @Storage("RodanSettingsPlugin.xml")
 )
 public class RodanSettingsState implements PersistentStateComponent<RodanSettingsState> {
   public String jiraToken = "";
@@ -22,8 +21,8 @@ public class RodanSettingsState implements PersistentStateComponent<RodanSetting
   public String jiraCloudUsername = "";
   public String refreshEveryMs = "5000";
 
-  public static RodanSettingsState getInstance() {
-    return ApplicationManager.getApplication().getService(RodanSettingsState.class);
+  public static RodanSettingsState getInstance(Project project) {
+    return project.getService(RodanSettingsState.class);
   }
 
   @Nullable

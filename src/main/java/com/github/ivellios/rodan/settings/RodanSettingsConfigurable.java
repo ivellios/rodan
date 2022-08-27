@@ -1,14 +1,19 @@
 package com.github.ivellios.rodan.settings;
 
 import com.github.ivellios.rodan.services.JiraTasksService;
-import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.options.Configurable;
+import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 
 public class RodanSettingsConfigurable implements Configurable {
+  private final Project project;
+
+  RodanSettingsConfigurable(Project project) {
+    this.project = project;
+  }
 
   private RodanSettingsComponent settingsComponent;
 
@@ -32,7 +37,7 @@ public class RodanSettingsConfigurable implements Configurable {
 
   @Override
   public boolean isModified() {
-    RodanSettingsState settings = RodanSettingsState.getInstance();
+    RodanSettingsState settings = RodanSettingsState.getInstance(this.project);
     boolean modified = !settingsComponent.getJiraToken().equals(settings.jiraToken);
     modified |= !settingsComponent.getJiraHostUrl().equals(settings.jiraHostUrl);
     modified |= !settingsComponent.getJiraQL().equals(settings.jiraQL);
@@ -43,22 +48,20 @@ public class RodanSettingsConfigurable implements Configurable {
 
   @Override
   public void apply() {
-    RodanSettingsState settings = RodanSettingsState.getInstance();
+    RodanSettingsState settings = RodanSettingsState.getInstance(this.project);
     settings.jiraToken = settingsComponent.getJiraToken();
     settings.jiraHostUrl = settingsComponent.getJiraHostUrl();
     settings.jiraQL = settingsComponent.getJiraQL();
     settings.refreshEveryMs = settingsComponent.getRefreshEveryMs();
     settings.jiraCloudUsername = settingsComponent.getJiraCloudUsername();
 
-    JiraTasksService projectCountingService =
-            ApplicationManager.getApplication().getService(JiraTasksService.class);
-
-    projectCountingService.restartPuller();
+    JiraTasksService pullerService = this.project.getService(JiraTasksService.class);
+    pullerService.restartPuller();
   }
 
   @Override
   public void reset() {
-    RodanSettingsState settings = RodanSettingsState.getInstance();
+    RodanSettingsState settings = RodanSettingsState.getInstance(this.project);
     settingsComponent.setJiraTokenText(settings.jiraToken);
     settingsComponent.setJiraHostUrlText(settings.jiraHostUrl);
     settingsComponent.setJiraQLText(settings.jiraQL);

@@ -1,6 +1,7 @@
 package com.github.ivellios.rodan.services;
 
 import com.github.ivellios.rodan.settings.RodanSettingsState;
+import com.intellij.openapi.project.Project;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -11,18 +12,21 @@ import java.util.Base64;
 class TasksPuller implements Runnable {
     private volatile boolean isRunning = true;
 
-    private TasksData tasksData;
+    private final TasksData tasksData;
+
+    private final Project project;
     private String jiraApiVersion = "2";
     RodanSettingsState settings;
 
-    TasksPuller(TasksData tasksData) {
+    TasksPuller(TasksData tasksData, Project project) {
         super();
+        this.project = project;
         this.tasksData = tasksData;
         loadSettings();
     }
 
     private void loadSettings() {
-        settings = RodanSettingsState.getInstance();
+        settings = RodanSettingsState.getInstance(this.project);
     }
 
     private String getToken() {
