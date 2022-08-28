@@ -5,6 +5,7 @@
     <vendor>Janusz "Ivellios" Kamienski</vendor>
 
     <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.tasks</depends>
 
     <extensions defaultExtensionNs="com.intellij">
         <projectService serviceImplementation="com.github.ivellios.rodan.services.JiraTasksService"/>
@@ -14,6 +15,7 @@
                 id="com.github.ivellios.rodan.settings.RodanSettingsConfigurable"
                 displayName="Rodan"
                 nonDefaultProject="true"/>
+<!--        <repositoryType implementation="com.github.ivellios.rodan.services.JiraAuthenticatedReporitoryType" />-->
         <projectService serviceImplementation="com.github.ivellios.rodan.settings.RodanSettingsState"/>
     </extensions>
 
