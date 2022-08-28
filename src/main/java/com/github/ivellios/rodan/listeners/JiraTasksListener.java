@@ -37,7 +37,13 @@ public class JiraTasksListener implements ProjectManagerListener {
         if (ApplicationManager.getApplication().isUnitTestMode()) {
             return;
         }
+    }
 
+    /**
+     * Invoked before the project closes.
+     * @param project
+     */
+    public void projectClosing(@NotNull Project project) {
         JiraTasksService service = project.getService(JiraTasksService.class);
         service.stopService();
     }
