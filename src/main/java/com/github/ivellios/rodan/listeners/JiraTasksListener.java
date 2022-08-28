@@ -35,7 +35,6 @@ public class JiraTasksListener implements ProjectManagerListener {
     @Override
     public void projectClosed(@NotNull Project project) {
         if (ApplicationManager.getApplication().isUnitTestMode()) {
-            return;
         }
     }
 
