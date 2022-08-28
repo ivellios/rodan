@@ -1,13 +1,43 @@
 package com.github.ivellios.rodan.settings;
 
+import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.ui.components.JBLabel;
 import com.intellij.ui.components.JBPasswordField;
 import com.intellij.ui.components.JBTextField;
 import com.intellij.util.ui.FormBuilder;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
+
+
+class TestDialogWrapper extends DialogWrapper {
+
+  TestDialogWrapper() {
+    super(true);
+    setTitle("Testing service");
+    init();
+  }
+
+  @Nullable
+  @Override
+  protected JComponent createCenterPanel() {
+    JPanel dialogPanel = new JPanel(new BorderLayout());
+
+    JLabel label = new JLabel("Test done - ALL FINE");
+    label.setPreferredSize(new Dimension(200, 50));
+    dialogPanel.add(label, BorderLayout.CENTER);
+
+    return dialogPanel;
+  }
+
+  @Override
+  protected Action @NotNull [] createActions() {
+    return new Action[]{getOKAction()};
+  }
+}
 
 
 class TestServiceAction extends AbstractAction {
@@ -18,6 +48,7 @@ class TestServiceAction extends AbstractAction {
 
   @Override
   public void actionPerformed(ActionEvent e) {
+    new TestDialogWrapper().show();
     System.out.println("Checking HTTP Server status!");
   }
 }
@@ -30,6 +61,7 @@ class TestJiraConnectionAction extends AbstractAction {
 
   @Override
   public void actionPerformed(ActionEvent e) {
+    new TestDialogWrapper().show();
     System.out.println("CHECKING JIRA!");
   }
 }
@@ -38,7 +70,6 @@ class TestJiraConnectionAction extends AbstractAction {
  * Supports creating and managing a {@link JPanel} for the Settings Dialog.
  */
 public class RodanSettingsComponent {
-
   private final JPanel settingsPanel;
   private final JBPasswordField jiraToken = new JBPasswordField();
   private final JBTextField jiraHostUrl = new JBTextField();
