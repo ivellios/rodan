@@ -3,10 +3,18 @@ package com.github.ivellios.rodan.settings;
 import com.github.ivellios.rodan.services.JiraTasksService;
 import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.project.Project;
+import com.intellij.tasks.TaskManager;
+import com.intellij.tasks.TaskRepository;
+import com.intellij.tasks.impl.TaskManagerImpl;
+import com.intellij.ui.CollectionListModel;
+import com.intellij.util.containers.ContainerUtil;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.Nullable;
+import com.intellij.tasks.generic.GenericRepository;
 
 import javax.swing.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class RodanSettingsConfigurable implements Configurable {
   private final Project project;
@@ -57,6 +65,32 @@ public class RodanSettingsConfigurable implements Configurable {
 
     JiraTasksService pullerService = this.project.getService(JiraTasksService.class);
     pullerService.restartPuller();
+
+    TaskManagerImpl myManager = (TaskManagerImpl) TaskManager.getManager(project);
+    List<TaskRepository> myRepositories = new ArrayList<>();
+    CollectionListModel listModel = new CollectionListModel(new ArrayList());
+
+    for (TaskRepository repository : myManager.getAllRepositories()) {
+      TaskRepository clone = repository.clone();
+      assert clone.equals(repository) : repository.getClass().getName();
+      myRepositories.add(clone);
+      listModel.add(clone);
+    }
+
+    TaskRepository repository = new GenericRepository();
+    repository = repository.clone();
+    repository.setUrl("https://google.com");
+
+    // FIXME: Does not recognize the symbol - even tho it does for GenericRepository ebove
+//    repository.setRepositoryType(com.intellij.tasks.generic.GenericRepositoryType);
+    System.out.println(repository.getRepositoryType());
+    System.out.println(repository.getPresentableName());
+    System.out.println(repository.toString());
+    // repository
+    myRepositories.add(repository);
+    List<TaskRepository> newRepositories = ContainerUtil.map(myRepositories, TaskRepository::clone);
+    myManager.setRepositories(newRepositories);
+    myManager.updateIssues(null);
   }
 
   @Override
