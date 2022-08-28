@@ -58,7 +58,6 @@ public class RodanSettingsConfigurable implements Configurable {
     settings.httpServerPort = settingsComponent.getHttpServerPort();
 
     JiraTasksService tasksService = this.project.getService(JiraTasksService.class);
-    System.out.println("Restarting");
     tasksService.restartService();
   }
 
