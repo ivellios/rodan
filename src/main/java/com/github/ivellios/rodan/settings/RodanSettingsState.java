@@ -20,6 +20,7 @@ public class RodanSettingsState implements PersistentStateComponent<RodanSetting
   public String jiraQL = "assignee%20%3D%20currentUser%28%29%20AND%20resolution%20%3D%20unresolved"; // default value for active user tasks
   public String jiraCloudUsername = "";
   public String refreshEveryMs = "5000";
+  public String httpServerPort = "7134";
 
   public static RodanSettingsState getInstance(Project project) {
     return project.getService(RodanSettingsState.class);
@@ -34,6 +35,10 @@ public class RodanSettingsState implements PersistentStateComponent<RodanSetting
   @Override
   public void loadState(@NotNull RodanSettingsState state) {
     XmlSerializerUtil.copyBean(state, this);
+  }
+
+  public int getHttpServerPort() {
+    return Integer.parseInt(this.httpServerPort);
   }
 
 }

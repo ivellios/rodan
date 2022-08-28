@@ -1,5 +1,6 @@
 package com.github.ivellios.rodan.services;
 
+import com.github.ivellios.rodan.settings.RodanSettingsState;
 import com.intellij.openapi.project.Project;
 import com.sun.net.httpserver.HttpServer;
 
@@ -7,7 +8,6 @@ import java.io.IOException;
 
 public class JiraTasksService {
     private final Project project;
-
     private HttpServer server = null;
     private TasksData tasksData;
 
@@ -26,7 +26,13 @@ public class JiraTasksService {
     public void stopService() {
         this.stopPuller();
         this.server.stop(1);
+        this.server = null;
 
+    }
+
+    public void restartService() {
+        this.stopService();
+        this.startService();
     }
 
     public void restartPuller() {
@@ -35,9 +41,10 @@ public class JiraTasksService {
     }
 
     public void startServer() {
+        RodanSettingsState settings = RodanSettingsState.getInstance(this.project);
         if (this.server == null) {
             try {
-                this.server = RodanHttpServer.start(this.tasksData);
+                this.server = RodanHttpServer.start(this.tasksData, settings.getHttpServerPort());
             } catch (IOException exception) {
                 System.out.println("Cannot start server");
                 try {
