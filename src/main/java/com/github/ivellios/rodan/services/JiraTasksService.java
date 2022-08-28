@@ -40,6 +40,11 @@ public class JiraTasksService {
         this.startPuller();
     }
 
+    public boolean testServer() {
+        startServer();
+        return this.server != null;
+    }
+
     public void startServer() {
         RodanSettingsState settings = RodanSettingsState.getInstance(this.project);
         if (this.server == null) {
@@ -51,6 +56,7 @@ public class JiraTasksService {
                     Thread.sleep(1000);
                     this.startServer();
                 } catch (InterruptedException ex) {
+                    this.server = null;
                 }
             }
         }

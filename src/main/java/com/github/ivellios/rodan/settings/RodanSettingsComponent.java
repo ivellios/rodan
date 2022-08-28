@@ -7,6 +7,32 @@ import com.intellij.util.ui.FormBuilder;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+
+
+class TestServiceAction extends AbstractAction {
+  TestServiceAction() {
+    super("Test service");
+    putValue(SHORT_DESCRIPTION, "Check if the service will run smoothly with current settings.");
+  }
+
+  @Override
+  public void actionPerformed(ActionEvent e) {
+    System.out.println("Checking HTTP Server status!");
+  }
+}
+
+class TestJiraConnectionAction extends AbstractAction {
+  TestJiraConnectionAction() {
+    super("Test connection to Jira");
+    putValue(SHORT_DESCRIPTION, "Check if the connection to your Jira service is working properly.");
+  }
+
+  @Override
+  public void actionPerformed(ActionEvent e) {
+    System.out.println("CHECKING JIRA!");
+  }
+}
 
 /**
  * Supports creating and managing a {@link JPanel} for the Settings Dialog.
@@ -29,6 +55,8 @@ public class RodanSettingsComponent {
             .addLabeledComponent(new JBLabel("Refresh tasks every (ms): "), refreshEveryMs, 1, false)
             .addLabeledComponent(new JBLabel("Local HTTP Server port (set to any unused): "), httpServerPort, 1, false)
             .addLabeledComponent(new JBLabel("Jira Cloud username (fill in if you want to connect to the Jira Cloud service): "), jiraCloudUsername, 1, true)
+            .addComponent(new JButton(new TestServiceAction()), 0)
+            .addComponent(new JButton(new TestJiraConnectionAction()), 0)
             .addComponentFillVertically(new JPanel(), 0)
             .getPanel();
   }
