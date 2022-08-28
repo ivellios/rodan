@@ -43,6 +43,7 @@ public class RodanSettingsConfigurable implements Configurable {
     modified |= !settingsComponent.getJiraQL().equals(settings.jiraQL);
     modified |= !settingsComponent.getRefreshEveryMs().equals(settings.refreshEveryMs);
     modified |= !settingsComponent.getJiraCloudUsername().equals(settings.jiraCloudUsername);
+    modified |= !settingsComponent.getHttpServerPort().equals(settings.httpServerPort);
     return modified;
   }
 
@@ -54,9 +55,10 @@ public class RodanSettingsConfigurable implements Configurable {
     settings.jiraQL = settingsComponent.getJiraQL();
     settings.refreshEveryMs = settingsComponent.getRefreshEveryMs();
     settings.jiraCloudUsername = settingsComponent.getJiraCloudUsername();
+    settings.httpServerPort = settingsComponent.getHttpServerPort();
 
-    JiraTasksService pullerService = this.project.getService(JiraTasksService.class);
-    pullerService.restartPuller();
+    JiraTasksService tasksService = this.project.getService(JiraTasksService.class);
+    tasksService.restartService();
   }
 
   @Override
@@ -67,6 +69,7 @@ public class RodanSettingsConfigurable implements Configurable {
     settingsComponent.setJiraQLText(settings.jiraQL);
     settingsComponent.setRefreshEveryMs(settings.refreshEveryMs);
     settingsComponent.setJiraCloudUsername(settings.jiraCloudUsername);
+    settingsComponent.setHttpServerPort(settings.httpServerPort);
   }
 
   @Override

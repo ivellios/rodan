@@ -19,6 +19,7 @@ public class RodanSettingsComponent {
   private final JBTextField jiraQL = new JBTextField();
   private final JBTextField refreshEveryMs = new JBTextField();
   private final JBTextField jiraCloudUsername = new JBTextField();
+  private final JBTextField httpServerPort = new JBTextField();
 
   public RodanSettingsComponent() {
     settingsPanel = FormBuilder.createFormBuilder()
@@ -26,6 +27,7 @@ public class RodanSettingsComponent {
             .addLabeledComponent(new JBLabel("Jira URL: "), jiraHostUrl, 1, false)
             .addLabeledComponent(new JBLabel("JQL to pull tasks: "), jiraQL, 1, false)
             .addLabeledComponent(new JBLabel("Refresh tasks every (ms): "), refreshEveryMs, 1, false)
+            .addLabeledComponent(new JBLabel("Local HTTP Server port (set to any unused): "), httpServerPort, 1, false)
             .addLabeledComponent(new JBLabel("Jira Cloud username (fill in if you want to connect to the Jira Cloud service): "), jiraCloudUsername, 1, true)
             .addComponentFillVertically(new JPanel(), 0)
             .getPanel();
@@ -62,6 +64,9 @@ public class RodanSettingsComponent {
   public String getJiraCloudUsername() {
     return jiraCloudUsername.getText();
   }
+  public String getHttpServerPort() {
+    return httpServerPort.getText();
+  }
 
   public void setJiraTokenText(@NotNull String newText) {
     jiraToken.setText(newText);
@@ -80,5 +85,7 @@ public class RodanSettingsComponent {
   }
 
   public void setJiraCloudUsername(String newText) { jiraCloudUsername.setText(newText); }
+
+  public void setHttpServerPort(String newText) { httpServerPort.setText(newText); }
 
 }
